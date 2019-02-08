@@ -16,11 +16,6 @@ namespace Structure_Practice
         {
             InitializeComponent();
         }
-        string frm2Name;
-        string frm2Address;
-        string frm2AccNum;
-        string frm2Balance;
-        string frm2Overdraft;
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
