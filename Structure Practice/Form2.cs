@@ -21,24 +21,19 @@ namespace Structure_Practice
         {
             this.Close(); //closes the form (this refers to parent object)
         }
-
-        private void btnSave_Click(object sender, EventArgs e) //when user double clicks save on form2
+        
+        public void btnSave_Click(object sender, EventArgs e) //when user double clicks save on form2
         {
-            //grabs the textbox value and sets it to variable in form2
-            string name = txtName.Text; 
-            string address = txtAdress.Text; 
-            int accNum = Convert.ToInt32(txtAccountNumber.Text);
-            double balance = Convert.ToDouble(txtBalance.Text);
-            int overdraft = Convert.ToInt32(txtOverdraft.Text);
+            string name = txtName.Text; //saves text input to variable
+            string address = txtAdress.Text; //saves text input to variable
+            int accountNumber = Convert.ToInt32(txtAccountNumber.Text); //converts text input to int, then saves to variable
+            double balance = Convert.ToDouble(txtBalance.Text); //converts text input to dbl, then saves to variable
+            int overdraft = Convert.ToInt32(txtOverdraft.Text); //converts text input to int, then saves to variable
 
-            //runs form1 method and sets the above variables as the argument
-            Form1.newAccountData(name, address, accNum, balance, overdraft);
-            
-        }
+            //newAccountData must be both public and static for me to use it like this
+            Form1.newAccountData(name, address, accountNumber, balance, overdraft);
+            this.Close();
 
-        private void btnTest_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show(frm2Name);
         }
     }
 }

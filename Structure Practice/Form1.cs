@@ -13,24 +13,11 @@ namespace Structure_Practice
     public partial class Form1 : Form
     {
         //public static string variable1; //sets a public variable that can be used between forms
+        public static int counter = 0;
+        const int MAX_CUST = 100;
+        public static Account[] Bank = new Account[MAX_CUST];
 
-        Account ethansAccount;
-        public static string name2; //these are variables declared to be used in the public method (to use between forms)
-        public static string address2;
-        public static int accountNumber2;
-        public static double balance2;
-        public static int overdraft2;
-
-        public static void newAccountData (string nme, string addrs, int accNum, double blnce, int ovrdrft)
-        { //creates a public method that sets the local variables equal to the variables in the parameters of newAccountData method
-            name2 = nme;
-            address2 = addrs;
-            accountNumber2 = accNum;
-            balance2 = blnce;
-            overdraft2 = ovrdrft;
-        }
-
-        enum AccountState
+        public enum AccountState
         {
             Active,
             Closed,
@@ -39,7 +26,7 @@ namespace Structure_Practice
             UnderAudit
         }
 
-        struct Account
+        public struct Account
         {
             public AccountState State;
             public string Name;
@@ -47,6 +34,28 @@ namespace Structure_Practice
             public int AccountNumber;
             public double Balance;
             public int Overdraft;
+        }
+
+        public static void newAccountData (string nme, string addrs, int accNum, double blnce, int ovrdrft)
+        { //creates a public method that sets the local variables equal to the variables in the parameters of newAccountData method
+            
+            int counter = 0; //start counting at 0
+            for (int i = 0; i < MAX_CUST; i++) //loop through all indexes of array to find next available index
+            {
+                if (Bank[i].Name == null) //checking for first unset bank account name in bank array
+                {
+                    counter = i; //marks first index of available bank name with counter it's on (could be 4, 5, 454, ect)
+                    break; //ends for loop automatically
+                }
+            }
+            //sets the first available bank account equal to matching parameters of method
+            Bank[counter].State = AccountState.New;
+            Bank[counter].Name = nme;
+            Bank[counter].Address = addrs;
+            Bank[counter].AccountNumber = accNum;
+            Bank[counter].Balance = blnce;
+            Bank[counter].Overdraft = ovrdrft;
+            //what to do with accounts in list box
         }
 
         private void TestShow(Account a)
@@ -61,20 +70,42 @@ namespace Structure_Practice
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ethansAccount.Name = "Ethan Piper";
-            ethansAccount.Balance = 100.00;
-            ethansAccount.State = AccountState.Active;
+            
         }
 
         private void btnShow_Click(object sender, EventArgs e)
         {
-            TestShow(ethansAccount); //dialog box appears with the name from ethansAccount
+
+            listBox1.Items.Clear(); //clrars list box
+            int counter = 0; //start counting at zero
+            for (int i = 0; i < Bank.Length; i++)
+            {
+                if (Bank[i].Name == null) //checking for first unset bank account name in bank array
+                {
+                    counter = i; //marks first index of available bank name with counter it's on (could be 4, 5, 454, ect)
+                    break; //ends for loop automatically
+                }
+                listBox1.Items.Add(i + " " + Bank[i].State + " " + Bank[i].Name + " " + Bank[i].Address + " " + Bank[i].AccountNumber + " " + Bank[i].Balance + " " + Bank[i].Overdraft);
+            }
+            
         }
 
         private void btnAddNewAccount_Click(object sender, EventArgs e)
         {
             Form2 f = new Form2(); //creates a new instance of form2 (named f)
             f.ShowDialog(); //makes the instance of form2 (named f btw) a dialog box....meaning the user can't leave the box until the X is clicked
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+        }
+
+        public void btnEditAcc_Click(object sender, EventArgs e)
+        {
+            Form3 form3 = new Form3();
+            form3.ShowDialog();
+            counter = Convert.ToInt32(txtEditAcc.Text); //converts edit text into int, saves that int to variable counter, use counter to find bank in bank array for form3
         }
     }
 }
